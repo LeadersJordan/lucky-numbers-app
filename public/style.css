@@ -1,0 +1,297 @@
+/*
+ * Leaders Lucky Number Campaign - Cloud App Styles
+ */
+
+:root {
+    --llnc-magenta: #ad2f80;
+    --llnc-magenta-hover: #8e2669;
+    --llnc-dark-grey: #333333;
+    --llnc-light-grey: #f5f5f5;
+    --llnc-white: #ffffff;
+    --llnc-text: #222222;
+    --llnc-border: #dddddd;
+    --llnc-taken: #cccccc;
+    --llnc-taken-text: #888888;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: var(--llnc-light-grey);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: var(--llnc-text);
+}
+
+/* Mockup Global Header */
+.mockup-header {
+    background-color: var(--llnc-white);
+    border-bottom: 2px solid var(--llnc-magenta);
+    padding: 25px 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    position: relative;
+}
+
+.mockup-header .logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mockup-header .logo img {
+    height: 85px;
+    width: auto;
+}
+
+.mockup-header .nav-links {
+    display: none;
+}
+
+/* Main Content Area */
+.page-content {
+    padding: 40px 20px;
+}
+
+/* Plugin Styles */
+.llnc-campaign-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px;
+    background-color: var(--llnc-white);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+    border-radius: 12px;
+}
+
+.llnc-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.llnc-campaign-title {
+    color: var(--llnc-magenta);
+    font-size: 1.2em;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    display: block;
+}
+
+.llnc-header h2 {
+    color: var(--llnc-dark-grey);
+    font-size: 2.5em;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+.llnc-header p {
+    color: #666;
+    font-size: 1.1em;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.6;
+}
+
+.llnc-grid-container {
+    background-color: var(--llnc-light-grey);
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid var(--llnc-border);
+}
+
+.llnc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(65px, 1fr));
+    gap: 12px;
+}
+
+.llnc-number {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--llnc-white);
+    border: 2px solid var(--llnc-magenta);
+    color: var(--llnc-magenta);
+    font-weight: bold;
+    font-size: 1.3em;
+    padding: 18px 0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    user-select: none;
+}
+
+.llnc-number:hover:not(.taken) {
+    background-color: var(--llnc-magenta);
+    color: var(--llnc-white);
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(173, 47, 128, 0.3);
+}
+
+.llnc-number.taken {
+    background-color: var(--llnc-taken);
+    border-color: var(--llnc-taken);
+    color: var(--llnc-taken-text);
+    cursor: not-allowed;
+    text-decoration: line-through;
+}
+
+/* Modal Styles */
+.llnc-modal {
+    display: none;
+    position: fixed;
+    z-index: 99999;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgba(0,0,0,0.6);
+    backdrop-filter: blur(5px);
+}
+
+.llnc-modal-content {
+    background-color: var(--llnc-white);
+    margin: 5% auto;
+    padding: 40px;
+    border: none;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 12px;
+    position: relative;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+}
+
+.llnc-close {
+    color: #aaa;
+    float: right;
+    font-size: 32px;
+    font-weight: bold;
+    cursor: pointer;
+    line-height: 1;
+    transition: color 0.2s;
+}
+
+.llnc-close:hover {
+    color: var(--llnc-magenta);
+}
+
+.llnc-modal-content h3 {
+    margin-top: 0;
+    color: var(--llnc-dark-grey);
+    font-size: 1.8em;
+    border-bottom: 2px solid var(--llnc-light-grey);
+    padding-bottom: 15px;
+    margin-bottom: 15px;
+}
+
+#llnc-selected-number-display {
+    color: var(--llnc-magenta);
+    font-size: 1.2em;
+}
+
+.llnc-modal-subtitle {
+    font-size: 1em;
+    color: #666;
+    margin-bottom: 25px;
+    line-height: 1.5;
+}
+
+.llnc-form-group {
+    margin-bottom: 20px;
+}
+
+.llnc-form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--llnc-dark-grey);
+}
+
+.llnc-form-group .required {
+    color: var(--llnc-magenta);
+}
+
+.llnc-form-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 2px solid var(--llnc-border);
+    border-radius: 6px;
+    font-size: 1.05em;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+.llnc-form-group input:focus {
+    border-color: var(--llnc-magenta);
+    outline: none;
+}
+
+.llnc-btn {
+    display: inline-block;
+    padding: 15px 24px;
+    font-size: 1.1em;
+    font-weight: bold;
+    text-align: center;
+    cursor: pointer;
+    border: none;
+    border-radius: 6px;
+    width: 100%;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.llnc-btn-magenta {
+    background-color: var(--llnc-magenta);
+    color: var(--llnc-white);
+}
+
+.llnc-btn-magenta:hover {
+    background-color: var(--llnc-magenta-hover);
+    box-shadow: 0 4px 12px rgba(173, 47, 128, 0.3);
+}
+
+#llnc-form-messages {
+    margin-bottom: 20px;
+    padding: 15px;
+    border-radius: 6px;
+    display: none;
+    font-weight: 500;
+}
+
+#llnc-form-messages.error {
+    display: block;
+    background-color: #ffebee;
+    color: #c62828;
+    border: 1px solid #ef9a9a;
+}
+
+#llnc-form-messages.success {
+    display: block;
+    background-color: #e8f5e9;
+    color: #2e7d32;
+    border: 1px solid #a5d6a7;
+}
+
+/* Mockup Footer */
+.mockup-footer {
+    background-color: var(--llnc-dark-grey);
+    color: #aaa;
+    text-align: center;
+    padding: 40px 20px;
+    margin-top: 60px;
+}
+
+@media (max-width: 600px) {
+    .llnc-grid {
+        grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+        gap: 8px;
+    }
+    .llnc-number {
+        font-size: 1.1em;
+        padding: 12px 0;
+    }
+}
