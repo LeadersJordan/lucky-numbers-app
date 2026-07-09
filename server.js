@@ -100,7 +100,36 @@ cron.schedule('59 23 * * *', async () => {
         console.error("Error in Cron Job:", error);
     }
 });
-
+// Manual API endpoint to trigger email right now
+app.get('/send-email', async (req, res) => {
+    if (!db) return res.status(500).send("No DB connection");
+    try {
+        const todayStr = new Date().toISOString().split('T')[0];
+        const snapshot = await db.collection("lucky_numbers").where("date", "==", todayStr).get();
+        
+        if (snapshot.empty) return res.send("No numbers claimed today. No email sent.");
+        
+        const records = [];
+        snapshot.forEach(doc => records.push(doc.data()));
+        
+        const fields = ['date', 'lucky_number', 'customer_name', 'phone_number', 'invoice_number'];
+        const json2csvParser = new Parser({ fields });
+        const csv = json2csvParser.parse(records);
+        
+        const mailOptions = {
+            from: `"Lucky Numbers System" <${process.env.GMAIL_USER}>`,
+            to: process.env.EMAIL_RECIPIENTS,
+            subject: `Lucky Numbers Export - ${todayStr} (MANUAL)`,
+            text: `Attached is the manual export of all claimed lucky numbers for ${todayStr}.`,
+            attachments: [{ filename: `lucky_numbers_${todayStr}.csv`, content: csv }]
+        };
+        
+        await transporter.sendMail(mailOptions);
+        res.send("<h1>✅ Success! Check your email right now!</h1>");
+    } catch (error) {
+        res.status(500).send("Error sending email: " + error.message);
+    }
+});
 // API test endpoint
 app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', time: new Date() });
