@@ -43,7 +43,6 @@ $(document).ready(function() {
 
     // Listen for Real-time Updates from Firebase
     db.collection("lucky_numbers")
-      .where("date", "==", getTodayStr())
       .onSnapshot((querySnapshot) => {
           // Reset all to available first (in case of a day reset)
           $('.llnc-number').removeClass('taken').removeAttr('title');
@@ -51,7 +50,7 @@ $(document).ready(function() {
           querySnapshot.forEach((doc) => {
               const data = doc.data();
               const num = data.lucky_number;
-              $('#num-' + num).addClass('taken').attr('title', 'Already taken today');
+              $('#num-' + num).addClass('taken').attr('title', 'Already taken');
           });
       });
 
@@ -100,29 +99,27 @@ $(document).ready(function() {
         messages.hide();
 
         try {
-            // Check if phone or invoice already used today
+            // Check if phone or invoice already used
             const phoneCheck = await db.collection("lucky_numbers")
-                .where("date", "==", getTodayStr())
                 .where("phone_number", "==", phoneNumber).get();
             
             if (!phoneCheck.empty) {
-                showMessage('error', 'This phone number has already been used today.');
+                showMessage('error', 'This phone number has already been used.');
                 submitBtn.prop('disabled', false).text('Secure My Number');
                 return;
             }
 
             const invoiceCheck = await db.collection("lucky_numbers")
-                .where("date", "==", getTodayStr())
                 .where("invoice_number", "==", invoiceNumber).get();
             
             if (!invoiceCheck.empty) {
-                showMessage('error', 'This invoice number has already been used today.');
+                showMessage('error', 'This invoice number has already been used.');
                 submitBtn.prop('disabled', false).text('Secure My Number');
                 return;
             }
 
             // Check if number itself is taken (Race condition prevention)
-            const docRef = db.collection("lucky_numbers").doc(`${getTodayStr()}_${luckyNumber}`);
+            const docRef = db.collection("lucky_numbers").doc(luckyNumber.toString());
             
             // Run transaction to ensure atomicity
             await db.runTransaction(async (transaction) => {
@@ -169,14 +166,14 @@ $(document).ready(function() {
             return;
         }
         
-        if(confirm("Are you sure you want to clear all numbers for today? This cannot be undone.")) {
+        if(confirm("Are you sure you want to clear ALL numbers? This cannot be undone.")) {
             try {
-                const snapshot = await db.collection("lucky_numbers").where("date", "==", getTodayStr()).get();
-                const batch = db.batch();
+                const snapshot = await db.collection("lucky_numbers").get();
+                const promises = [];
                 snapshot.docs.forEach((doc) => {
-                    batch.delete(doc.ref);
+                    promises.push(doc.ref.delete());
                 });
-                await batch.commit();
+                await Promise.all(promises);
                 alert("Reset successful.");
             } catch(e) {
                 alert("Error resetting: " + e.message);
