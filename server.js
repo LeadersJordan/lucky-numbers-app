@@ -44,11 +44,11 @@ async function triggerEmailExport() {
     }
 
     const todayStr = new Date().toISOString().split('T')[0];
-    const snapshot = await db.collection("lucky_numbers").where("date", "==", todayStr).get();
+    const snapshot = await db.collection("lucky_numbers").get();
 
     if (snapshot.empty) {
-        console.log("No numbers claimed today. No email sent.");
-        return "No numbers claimed today. No email sent.";
+        console.log("No numbers claimed. No email sent.");
+        return "No numbers claimed. No email sent.";
     }
 
     const records = [];
